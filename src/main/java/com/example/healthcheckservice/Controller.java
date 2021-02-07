@@ -20,7 +20,7 @@ public class Controller {
         this.healthCheckRepository = healthCheckRepository;
     }
 
-    @GetMapping("/index")
+    @GetMapping(value = {"/", "/index"})
     public ModelAndView listHealthChecks() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("index");
