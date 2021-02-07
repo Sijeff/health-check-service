@@ -1,5 +1,5 @@
 create table health_check (
-    id bigint primary key,
+    id bigint primary key auto_increment,
     service_name varchar(255) not null unique,
     health_check_url varchar(255) not null,
     is_healthy boolean not null default false,
