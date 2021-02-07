@@ -2,12 +2,14 @@ package com.example.healthcheckservice;
 
 import com.example.healthcheckservice.domain.CreateHealthCheckRequest;
 import com.example.healthcheckservice.domain.HealthCheck;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 @RestController
 public class Controller {
@@ -18,7 +20,7 @@ public class Controller {
         this.healthCheckRepository = healthCheckRepository;
     }
 
-    @GetMapping("/")
+    @GetMapping("/index")
     public ModelAndView listHealthChecks() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("index");
@@ -27,21 +29,27 @@ public class Controller {
     }
 
     @GetMapping("/form")
-    public ModelAndView getCreateHealthCheckForm() {
+    public ModelAndView getCreateHealthCheckForm(CreateHealthCheckRequest createHealthCheckRequest) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("form");
         return modelAndView;
     }
 
     @PostMapping("/create")
-    public String createHealthCheck(@Validated CreateHealthCheckRequest request) {
-        System.out.println(request);
+    public ModelAndView createHealthCheck(@Validated CreateHealthCheckRequest request, BindingResult result, Model model) {
+        ModelAndView modelAndView = new ModelAndView();
+        if (result.hasErrors()) {
+            modelAndView.setViewName("form");
+            return modelAndView;
+        }
         try {
-            URI uri = new URI(request.getHealthCheckURL());
-            healthCheckRepository.save(new HealthCheck(request.getServiceName(), uri.toString()));
-            return "redirect:/index";
-        } catch (URISyntaxException e) {
-            return "form";
+            URL url = new URL(request.getHealthCheckURL());
+            healthCheckRepository.save(new HealthCheck(request.getServiceName(), url.toString()));
+            modelAndView.setViewName("index");
+            return modelAndView;
+        } catch (MalformedURLException e) {
+            modelAndView.setViewName("form");
+            return modelAndView;
         }
     }
 

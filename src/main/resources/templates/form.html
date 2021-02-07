@@ -5,22 +5,16 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-<h1>Create new health check</h1>
+<h1>Add new health check</h1>
 
-<form action="#" th:action="@{/}" th:object="${createHealthCheckRequest}" method="post">
-    <table border="1">
-        <tr>
-            <td><label th:text="#{msg.serviceName}" /></td>
-            <td><input type="text" th:field="*{serviceName}" required minlength="1"/></td>
-        </tr>
-        <tr>
-            <td><label th:text="#{msg.name}" /></td>
-            <td><input type="text" th:field="*{name}" required minlength="1"/></td>
-        </tr>
-        <tr>
-            <td><input type="submit" value="Submit" /></td>
-        </tr>
-    </table>
+<form action="#" th:action="@{/create}" th:object="${createHealthCheckRequest}" method="post">
+    <label for="serviceName">Service name</label>
+    <input type="text" th:field="*{serviceName}" id="serviceName" placeholder="Service name">
+    <span th:if="${#fields.hasErrors('serviceName')}" th:errors="*{serviceName}"></span>
+    <label for="healthCheckURL">Health check URL</label>
+    <input type="text" th:field="*{healthCheckURL}" id="healthCheckURL" placeholder="URL">
+    <span th:if="${#fields.hasErrors('healthCheckURL')}" th:errors="*{healthCheckURL}"></span>
+    <input type="submit" value="Add service">
 </form>
 
 </body>
