@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registered services</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h1>Create new health check</h1>
+
+<form action="#" th:action="@{/}" th:object="${createHealthCheckRequest}" method="post">
+    <table border="1">
+        <tr>
+            <td><label th:text="#{msg.serviceName}" /></td>
+            <td><input type="text" th:field="*{serviceName}" required minlength="1"/></td>
+        </tr>
+        <tr>
+            <td><label th:text="#{msg.name}" /></td>
+            <td><input type="text" th:field="*{name}" required minlength="1"/></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Submit" /></td>
+        </tr>
+    </table>
+</form>
+
+</body>
+</html>
